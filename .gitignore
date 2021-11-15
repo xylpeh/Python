@@ -1,0 +1,10 @@
+/.vscode
+/account_gl_accounts.csv
+/account_gl_items.csv
+/bookingDatesTest.ipynb
+/chromedriver.exe
+/contract.ipynb
+/Contract_986_dbState (1).json
+/Contract_986_dbState (1).json.gz
+/seleniumUnitTest.py
+/TestBookingDates.ipynb
