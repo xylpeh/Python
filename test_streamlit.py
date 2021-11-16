@@ -11,14 +11,16 @@ left_column, right_column = st.columns([6, 10])
 # RFF+Z13:31001 #Prüfindentifikator 31001 ist Abschlagsrechnung
 
 with left_column:
-    chosen = st.radio(
+    energyTyp = st.radio(
         'Waehlen Sie den Energietraeger',
         ("Gas", "Strom"))
     
-    if(chosen == "Gas"):
-        chosen = 502
+    if(energyTyp == "Gas"):
+        energyTyp = 502
     else: 
-        chosen = 500
+        energyTyp = 500
+
+    
 
     sender = st.number_input("Wie ist die PartnerID des Senders?", value= 9900580000002)
     empfaenger = st.number_input("Wie ist die PartnerID des Empfaengers?", value= 9903913000003)
@@ -42,13 +44,19 @@ with left_column:
     endPeriod = st.date_input("Wann endet die Abrechnungsperiode [DTM+155]")
     fendPeriod = endPeriod.strftime("%Y%m%d")
 
+    taxRate = st.number_input("Geben Sie hier den Steuersatz ein (TAX+7)", value=16, max_value= 100)
+    netto = st.number_input("Geben Sie hier den Nettobetrag ein (MOA+125)", value=10)
+    brutto = netto/ (100) * (100+taxRate)
+    tax = netto - brutto
+    paidAmount = st.number_input("Geben Sie hier die Anzahlung ein (MOA+113). Wenn der Betrag höher ist als MOA+77 entsteht eine Gutschrift/ Rückerstattung")
+
     # with st.container():
     #     dtm265= st.checkbox("DTM:256 Fälligkeitsdatum")
     #     if(dtm265):
     #         Faelligkeitsdatum = st.date_input("Wan ist die Faelligkeit [DTM265]")
     #         DateFormat = Faelligkeitsdatum.strftime("%Y%m%d")
     
-    # t = "UNA:+.? '" + "\n" + "UNB+UNOC:3+" + str(sender) + ":" + str(chosen) + "+" + str(empfaenger) + ":" + str(chosen) + "+210518:2356+D0000000564962'" + "\n" + "UNH+IN000000667750+INVOIC:D:06A:UN:2.7a'" + "\n"+ "BGM+380+VAB-21-178827+9'"
+    # t = "UNA:+.? '" + "\n" + "UNB+UNOC:3+" + str(sender) + ":" + str(energyTyp) + "+" + str(empfaenger) + ":" + str(energyTyp) + "+210518:2356+D0000000564962'" + "\n" + "UNH+IN000000667750+INVOIC:D:06A:UN:2.7a'" + "\n"+ "BGM+380+VAB-21-178827+9'"
     # t2 = "DTM+137:" + str(fbelegdatum) + ":102'" + '\n' + "DTM+9:" + str(fBuchdatum) + "'" + "\n" + "DTM+155: :102'"  + "DTM+156: :102'" + "IMD++ABS'" + "RFF+Z13:31001'"
 
 with right_column:
@@ -60,7 +68,7 @@ with right_column:
     #     edi.append(DateFormat)
 
     edi.append("UNA:+.? '")
-    edi.append("UNB+UNOC:3+" + str(sender) + ":" + str(chosen) + "+" + str(empfaenger) + ":" + str(chosen) + "+210518:2356+D0000000564962'")
+    edi.append("UNB+UNOC:3+" + str(sender) + ":" + str(energyTyp) + "+" + str(empfaenger) + ":" + str(energyTyp) + "+210518:2356+D0000000564962'")
     edi.append("UNH+IN000000667750+INVOIC:D:06A:UN:2.7a'")
     edi.append("BGM+380+VAB-21-178827+9'")
     edi.append("DTM+137:" + str(fbelegdatum) + ":102'")
@@ -83,15 +91,15 @@ with right_column:
     edi.append("QTY+47:1:H87\'")
     edi.append("DTM+155:20211001:102\'")
     edi.append("DTM+155:20211001:102\'")
-    edi.append("MOA+203:16.81'\'")
+    edi.append("MOA+203:16.81\'")
     edi.append("PRI+CAL:16.81\'")
     edi.append("TAX+7+VAT+++:::19+S\'")
     edi.append("UNS+S\'")
-    edi.append("MOA+77:20.00\'")
-    edi.append("MOA+9:20.00\'")
-    edi.append("TAX+7+VAT+++:::19+S\'")
-    edi.append("MOA+125:16.81\'")
-    edi.append("MOA+161:3.19\'")
+    edi.append("MOA+77:"+str(brutto)+"\'") # Summe aller MOA+125 und MOA+161 Positionen  
+    edi.append("MOA+9:"+str(brutto)+"\'") # Rechnungsbetrag
+    edi.append("TAX+7+VAT+++:::"+str(taxRate)+"+S\'") #Steuer 
+    edi.append("MOA+125:"+str(netto)+"\'") # Netto
+    edi.append("MOA+161:"+str(tax)+"\'") # Steuer
     edi.append("UNT+32+IN000000667750\'")
     edi.append("UNZ+1+D0000000564962\'")
 
@@ -110,7 +118,7 @@ with right_column:
     # st.write('PYT+3\'') #festgelegte Fälligkeit
     # st.write(f'DTM+265: {fFaelligkeitsdatum}:102\'')
     # st.write(f'LIN+1++9990001000376:Z01\'') # Position Segment 1
-    # st.write(f'QTY+47:1:H87\'') # h87 Stück, KWH, KWT Kilowatt, KVR Kilovolt-amp-reaktiv
+    # st.write(f'QTY+47:1:H87\'') # H87 Stück, KWH, KWT Kilowatt, KVR Kilovolt-amp-reaktiv
     # st.write(f'MOA+203\'')
 
 
