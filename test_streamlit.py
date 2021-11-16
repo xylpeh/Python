@@ -91,15 +91,15 @@ with right_column:
     edi.append("QTY+47:1:H87\'")
     edi.append("DTM+155:20211001:102\'")
     edi.append("DTM+155:20211001:102\'")
-    edi.append("MOA+203:16.81\'")
-    edi.append("PRI+CAL:16.81\'")
-    edi.append("TAX+7+VAT+++:::19+S\'")
+    edi.append("MOA+203:"+str(netto)+"\'")
+    edi.append("PRI+CAL:"+str(netto)+"\'")
+    edi.append("TAX+7+VAT+++:::"+str(taxRate)+"+S\'") #Steuer
     edi.append("UNS+S\'")
     edi.append("MOA+77:"+str(brutto)+"\'") # Summe aller MOA+125 und MOA+161 Positionen  
     edi.append("MOA+9:"+str(brutto)+"\'") # Rechnungsbetrag
     edi.append("TAX+7+VAT+++:::"+str(taxRate)+"+S\'") #Steuer 
-    edi.append("MOA+125:16.81\'")
-    edi.append("MOA+161:3.19\'")
+    edi.append("MOA+125:+"+str(netto)+"\'")
+    edi.append("MOA+161:+"+str(tax)+"\'")
     edi.append("UNT+32+IN000000667750\'")
     edi.append("UNZ+1+D0000000564962\'")
 
