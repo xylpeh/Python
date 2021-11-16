@@ -98,6 +98,8 @@ with right_column:
     edi.append("MOA+77:"+str(brutto)+"\'") # Summe aller MOA+125 und MOA+161 Positionen  
     edi.append("MOA+9:"+str(brutto)+"\'") # Rechnungsbetrag
     edi.append("TAX+7+VAT+++:::"+str(taxRate)+"+S\'") #Steuer 
+    edi.append("MOA+125:16.81\'")
+    edi.append("MOA+161:3.19\'")
     edi.append("UNT+32+IN000000667750\'")
     edi.append("UNZ+1+D0000000564962\'")
 
