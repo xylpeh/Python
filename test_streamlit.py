@@ -47,7 +47,7 @@ with left_column:
     taxRate = st.number_input("Geben Sie hier den Steuersatz ein (TAX+7)", value=16, max_value= 100)
     netto = st.number_input("Geben Sie hier den Nettobetrag ein (MOA+125)", value=10)
     brutto = netto/ (100) * (100+taxRate)
-    tax = netto - brutto
+    tax = brutto - netto 
     paidAmount = st.number_input("Geben Sie hier die Anzahlung ein (MOA+113). Wenn der Betrag höher ist als MOA+77 entsteht eine Gutschrift/ Rückerstattung")
 
     # with st.container():
