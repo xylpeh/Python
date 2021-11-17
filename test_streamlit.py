@@ -5,7 +5,7 @@ from datetime import date
 
 st.title("Edifact Generator")
 
-left_column, right_column = st.columns([6, 10])
+left_column, right_column = st.columns([7, 10])
 
 # IMD++ABS : Beschreibung des Rechungstypes, ABS Abschlagsrechung die fristgerecht vor Fälligkeit an Rechnungsempfänger übertragen (andere ABR, JVR, ZVR, MVR)
 # RFF+Z13:31001 #Prüfindentifikator 31001 ist Abschlagsrechnung
@@ -48,7 +48,13 @@ with left_column:
     netto = st.number_input("Geben Sie hier den Nettobetrag ein (MOA+125)", value=10)
     brutto = netto/ (100) * (100+taxRate)
     tax = netto - brutto
-    paidAmount = st.number_input("Geben Sie hier die Anzahlung ein (MOA+113). Wenn der Betrag höher ist als MOA+77 entsteht eine Gutschrift/ Rückerstattung")
+    with st.container():
+        MOA113 = st.checkbox("Mit Anzahlung?")
+        if(MOA113):
+            paidAmount = st.number_input("Hoehe der Anzahlung (MOA+113). Ist der Betrag höher ist als MOA+77, entsteht eine Gutschrift")
+            bill = brutto - paidAmount
+        else:
+            bill = brutto 
 
     # with st.container():
     #     dtm265= st.checkbox("DTM:256 Fälligkeitsdatum")
@@ -96,7 +102,7 @@ with right_column:
     edi.append("TAX+7+VAT+++:::"+str(taxRate)+"+S\'") #Steuer
     edi.append("UNS+S\'")
     edi.append("MOA+77:"+str("{:.2f}".format(brutto,2))+"\'") # Summe aller MOA+125 und MOA+161 Positionen  
-    edi.append("MOA+9:"+str("{:.2f}".format(brutto,2))+"\'") # Rechnungsbetrag
+    edi.append("MOA+9:"+str("{:.2f}".format(bill,2))+"\'") # Rechnungsbetrag
     edi.append("TAX+7+VAT+++:::"+str(taxRate)+"+S\'") #Steuer 
     edi.append("MOA+125:"+str(netto)+"\'")
     edi.append("MOA+161:"+str("{:.2f}".format(tax, 2))+"\'")
