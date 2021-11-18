@@ -3,9 +3,12 @@ import pandas as pd
 from datetime import date
 
 
-st.title("Edifact Generator")
+st.title("Edifact Invoic Generator")
 st.subheader("prototype")
 st.caption("by Alexander Moeller")
+
+st.text("Kopiere am Anschluss deiner Einstellungen einfach \n die rechte Seite und füge unter Edifact --> manuellen Empfang ein.")
+st.text("Anschließend die drei Symobole für die DAR, \n Nachrichtenreferenz und Formatierung anklicken")
 
 left_column, right_column = st.columns([7, 10])
 
