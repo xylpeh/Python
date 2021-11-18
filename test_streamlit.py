@@ -4,6 +4,8 @@ from datetime import date
 
 
 st.title("Edifact Generator")
+st.subheader("prototype")
+st.caption("by Alexander Moeller")
 
 left_column, right_column = st.columns([7, 10])
 
@@ -47,10 +49,6 @@ with left_column:
     taxRate = st.number_input("Geben Sie hier den Steuersatz ein (TAX+7)", value=16, max_value= 100)
     netto = st.number_input("Geben Sie hier den Nettobetrag ein (MOA+125)", value=10.00)
     brutto = netto/ (100) * (100+taxRate)
-<<<<<<< HEAD
-    tax = brutto - netto 
-    paidAmount = st.number_input("Geben Sie hier die Anzahlung ein (MOA+113). Wenn der Betrag höher ist als MOA+77 entsteht eine Gutschrift/ Rückerstattung")
-=======
     tax = abs(netto - brutto)
     with st.container():
         MOA113 = st.checkbox("Mit Anzahlung?")
@@ -60,7 +58,6 @@ with left_column:
             bill = brutto - paidAmount
         else:
             bill = brutto 
->>>>>>> feature/guthaben
 
     # with st.container():
     #     dtm265= st.checkbox("DTM:256 Fälligkeitsdatum")
